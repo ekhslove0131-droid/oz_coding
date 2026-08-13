@@ -1,0 +1,155 @@
+/* 전체 요소에 box-sizing 적용 */
+* {
+    box-sizing: border-box;
+}
+
+/* 페이지 기본 설정 */
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333333;
+}
+
+/* 전체 이력서 박스 */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #cccccc;
+}
+
+/* 프로필 */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #333333;
+}
+
+.profile-img {
+    width: 180px;
+    height: 220px;
+    object-fit: cover;
+    border: 1px solid #cccccc;
+}
+
+.profile-text h1 {
+    margin: 0 0 10px;
+}
+
+.profile-text p {
+    margin: 8px 0;
+}
+
+.profile-text a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2255aa;
+    text-decoration: none;
+}
+
+.profile-text a:hover {
+    text-decoration: underline;
+}
+
+/* 각 영역 */
+.section {
+    margin-top: 35px;
+}
+
+.section h2 {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #aaaaaa;
+}
+
+/* 기본 정보 */
+.info-list li,
+.hobby-list li {
+    margin-bottom: 8px;
+}
+
+/* 경력 표 */
+.career-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.career-table th,
+.career-table td {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    text-align: left;
+}
+
+.career-table th {
+    background-color: #eeeeee;
+}
+
+/* 입력 폼 */
+.contact-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.form-item label {
+    margin-bottom: 5px;
+}
+
+.form-item input {
+    padding: 10px;
+    border: 1px solid #bbbbbb;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #333333;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555555;
+}
+
+/* 하단 */
+.footer {
+    margin-top: 40px;
+    padding-top: 15px;
+    border-top: 1px solid #cccccc;
+    text-align: center;
+    color: #777777;
+}
+
+/* 모바일 화면 */
+@media (max-width: 600px) {
+    .profile {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-img {
+        width: 150px;
+        height: 190px;
+    }
+
+    .contact-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    button {
+        width: 100%;
+    }
+}
