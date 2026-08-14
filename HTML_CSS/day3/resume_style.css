@@ -1,0 +1,243 @@
+/* 기본 설정 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    color: #333333;
+}
+
+/* 전체 이력서 */
+.resume-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #cccccc;
+}
+
+/* 상단 프로필 - Flex 사용 */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid #333333;
+}
+
+.profile-image {
+    width: 180px;
+    height: 220px;
+    object-fit: cover;
+    border: 1px solid #bbbbbb;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h1 {
+    margin: 0 0 5px;
+}
+
+.job {
+    font-weight: bold;
+    color: #555555;
+}
+
+.github-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2255aa;
+    text-decoration: none;
+   
+}
+
+.github-link:hover {
+    background-color: #2255aa;
+    color: #eeeeee;
+}
+
+/* 본문 */
+.main-content {
+    margin-top: 30px;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section h2 {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #aaaaaa;
+}
+
+/* 기본 정보 - Grid 사용 */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.info-box {
+    padding: 15px;
+    background-color: #f7f7f7;
+    border: 1px solid #dddddd;
+}
+
+.info-box h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.info-box p {
+    margin: 0;
+}
+
+/* 취미 - Grid 사용 */
+.hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.hobby-box {
+    padding: 15px;
+    border: 1px solid #dddddd;
+}
+
+.hobby-box h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.hobby-box p {
+    margin-bottom: 0;
+}
+
+/* 경력 표 */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.career-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.career-table th,
+.career-table td {
+    padding: 10px;
+    border: 1px solid #cccccc;
+    text-align: left;
+}
+
+.career-table th {
+    background-color: #eeeeee;
+}
+
+/* 폼 - Flex 사용 */
+.contact-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.form-item label {
+    margin-bottom: 5px;
+}
+
+.form-item input {
+    padding: 10px;
+    border: 1px solid #bbbbbb;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #333333;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555555;
+}
+
+/* 하단 */
+.footer {
+    padding-top: 15px;
+    border-top: 1px solid #cccccc;
+    text-align: center;
+    color: #777777;
+}
+
+/* 태블릿 */
+@media (max-width: 800px) {
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hobby-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-form {
+        flex-wrap: wrap;
+    }
+
+    .form-item {
+        min-width: 250px;
+    }
+}
+
+/* 모바일 */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .resume-container {
+        padding: 20px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-image {
+        width: 150px;
+        height: 190px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-item {
+        width: 100%;
+        min-width: 0;
+    }
+
+    button {
+        width: 100%;
+    }
+}
