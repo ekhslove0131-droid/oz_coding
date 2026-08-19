@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산기</title>
+    <link rel="stylesheet" href="calculator_style.css">
+    <script src="calculator_v2.js" defer></script>
+</head>
+<body>
+    <main class="calculator" id="calculator" aria-label="사칙연산 계산기">
+        <label class="screen-reader-only" for="display">계산식과 계산 결과</label>
+        <input
+            type="text"
+            id="display"
+            value="0"
+            readonly
+            aria-live="polite"
+        >
+
+        <div class="buttons" id="calculator-buttons" aria-label="계산기 버튼">
+            <button
+                type="button"
+                class="button power is-on"
+                data-action="power"
+                aria-pressed="true"
+            >ON/OFF</button>
+            <button type="button" class="button clear" data-action="clear">C</button>
+            <button type="button" class="button operator" data-action="operator" data-value="/">÷</button>
+
+            <button type="button" class="button number" data-action="number" data-value="7">7</button>
+            <button type="button" class="button number" data-action="number" data-value="8">8</button>
+            <button type="button" class="button number" data-action="number" data-value="9">9</button>
+            <button type="button" class="button operator" data-action="operator" data-value="*">×</button>
+
+            <button type="button" class="button number" data-action="number" data-value="4">4</button>
+            <button type="button" class="button number" data-action="number" data-value="5">5</button>
+            <button type="button" class="button number" data-action="number" data-value="6">6</button>
+            <button type="button" class="button operator" data-action="operator" data-value="-">−</button>
+
+            <button type="button" class="button number" data-action="number" data-value="1">1</button>
+            <button type="button" class="button number" data-action="number" data-value="2">2</button>
+            <button type="button" class="button number" data-action="number" data-value="3">3</button>
+            <button type="button" class="button operator" data-action="operator" data-value="+">+</button>
+
+            <button type="button" class="button number" data-action="number" data-value=".">.</button>
+            <button type="button" class="button number" data-action="number" data-value="0">0</button>
+            <button type="button" class="button enter" data-action="calculate">Enter</button>
+        </div>
+    </main>
+</body>
+</html>
