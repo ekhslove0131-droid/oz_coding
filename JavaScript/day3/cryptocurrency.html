@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Binance 24시간 티커 데이터를 활용한 암호화폐 가격변동 추적기">
+    <title>암호화폐 가격변동 추적기</title>
+    <link rel="stylesheet" href="cryptocurrency_style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="terminal-header">
+            <div class="brand-block">
+                <div class="brand-mark" aria-hidden="true">CM</div>
+                <div>
+                    <h1>CRYPTO MARKET</h1>
+                    <p>PRICE MOVEMENT TRACKER</p>
+                </div>
+            </div>
+
+            <div class="terminal-meta" aria-label="시장 데이터 상태">
+                <div class="meta-item">
+                    <span>DATA</span>
+                    <strong>BINANCE SPOT</strong>
+                </div>
+                <div class="meta-item">
+                    <span>NEXT UPDATE</span>
+                    <strong id="countdown">--:--</strong>
+                </div>
+                <div class="connection-state" id="connectionState" data-state="loading">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    <strong id="connectionText">CONNECTING</strong>
+                </div>
+                <time id="currentClock" class="terminal-clock" datetime="">--:--:--</time>
+            </div>
+        </header>
+
+        <section class="command-bar" aria-label="시장 조회 도구">
+            <div class="tabs" role="tablist" aria-label="조회 범위">
+                <button class="tab-btn active" type="button" role="tab" aria-selected="true" data-tab="all">
+                    전체 시장
+                </button>
+                <button class="tab-btn" type="button" role="tab" aria-selected="false" data-tab="favorites">
+                    관심 종목 <span id="favoriteCount" class="tab-count">0</span>
+                </button>
+            </div>
+
+            <div class="command-actions">
+                <label class="search-box" for="searchInput">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="m16 16 4 4"></path>
+                    </svg>
+                    <input type="search" id="searchInput" autocomplete="off" placeholder="심볼 검색 · BTC, ETH, SOL">
+                </label>
+
+                <button id="refreshButton" class="refresh-button" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M20 11a8 8 0 1 0-2.35 5.65"></path>
+                        <path d="M20 4v7h-7"></path>
+                    </svg>
+                    새로고침
+                </button>
+            </div>
+        </section>
+
+        <div id="errorBanner" class="error-banner" role="alert" hidden>
+            <strong>데이터 연결 오류</strong>
+            <span id="errorMessage">잠시 후 다시 시도해주세요.</span>
+        </div>
+
+        <main>
+            <section class="market-summary" aria-label="시장 요약">
+                <article class="summary-cell">
+                    <span>조회 종목</span>
+                    <strong id="summaryTotal">0</strong>
+                    <small>USDT pairs</small>
+                </article>
+                <article class="summary-cell summary-up">
+                    <span>상승</span>
+                    <strong id="summaryAdvancers">0</strong>
+                    <small id="summaryAdvanceRate">0.0%</small>
+                </article>
+                <article class="summary-cell summary-down">
+                    <span>하락</span>
+                    <strong id="summaryDecliners">0</strong>
+                    <small id="summaryDeclineRate">0.0%</small>
+                </article>
+                <article class="summary-cell">
+                    <span>평균 변동률</span>
+                    <strong id="summaryAverage">0.00%</strong>
+                    <small>24H simple avg.</small>
+                </article>
+                <article class="summary-cell">
+                    <span>총 거래대금</span>
+                    <strong id="summaryVolume">0</strong>
+                    <small>24H quote volume</small>
+                </article>
+            </section>
+
+            <section class="breadth-panel" aria-label="시장 상승 하락 비율">
+                <div class="breadth-label">
+                    <span>MARKET BREADTH</span>
+                    <strong id="breadthText">상승 0 · 하락 0 · 보합 0</strong>
+                </div>
+                <div class="breadth-track" aria-hidden="true">
+                    <span id="breadthUp" class="breadth-up"></span>
+                    <span id="breadthFlat" class="breadth-flat"></span>
+                    <span id="breadthDown" class="breadth-down"></span>
+                </div>
+                <div class="breadth-legend" aria-hidden="true">
+                    <span><i class="legend-swatch up"></i>상승</span>
+                    <span><i class="legend-swatch flat"></i>보합</span>
+                    <span><i class="legend-swatch down"></i>하락</span>
+                </div>
+            </section>
+
+            <div class="dashboard-grid">
+                <section class="panel heatmap-panel" aria-labelledby="heatmapTitle">
+                    <div class="panel-heading heatmap-heading">
+                        <div>
+                            <span class="panel-code">MKT-01</span>
+                            <h2 id="heatmapTitle">MARKET HEATMAP</h2>
+                            <p>타일 크기: 24시간 거래대금 · 색상: 24시간 변동률</p>
+                        </div>
+                        <div class="heat-legend" aria-label="변동률 색상 범례">
+                            <span>-10%</span>
+                            <div class="legend-gradient" aria-hidden="true"></div>
+                            <span>+10%</span>
+                        </div>
+                    </div>
+
+                    <div id="loadingState" class="loading-state">
+                        <div class="loading-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+                        <strong>시장 데이터를 불러오는 중입니다.</strong>
+                        <span>Binance 24시간 티커 연결</span>
+                    </div>
+
+                    <div id="heatmap" class="market-map" aria-live="polite"></div>
+                    <div id="heatmapEmpty" class="empty-state" hidden>
+                        <strong>표시할 종목이 없습니다.</strong>
+                        <span>검색어를 지우거나 관심 종목을 추가하세요.</span>
+                    </div>
+                </section>
+
+                <aside class="side-rail" aria-label="선택 종목과 시장 순위">
+                    <section class="panel selected-panel" aria-labelledby="selectedTitle">
+                        <div class="panel-heading compact-heading">
+                            <div>
+                                <span class="panel-code">LIVE-01</span>
+                                <h2 id="selectedTitle">SELECTED ASSET</h2>
+                            </div>
+                            <button id="selectedFavoriteButton" class="favorite-button" type="button" aria-label="선택 종목 관심 등록" disabled>☆</button>
+                        </div>
+
+                        <div id="selectedEmpty" class="selected-empty">히트맵 또는 표에서 종목을 선택하세요.</div>
+                        <div id="selectedContent" hidden>
+                            <div class="selected-price-row">
+                                <div>
+                                    <strong id="selectedSymbol">-</strong>
+                                    <span id="selectedPair">-</span>
+                                </div>
+                                <div class="selected-price-box">
+                                    <strong id="selectedPrice">-</strong>
+                                    <span id="selectedChange">-</span>
+                                </div>
+                            </div>
+
+                            <div id="sparkline" class="sparkline" aria-label="현재 세션 가격 추적 그래프"></div>
+                            <div class="session-change">
+                                <span>세션 변동</span>
+                                <strong id="sessionChange">0.00%</strong>
+                            </div>
+
+                            <dl class="selected-stats">
+                                <div><dt>24H OPEN</dt><dd id="selectedOpen">-</dd></div>
+                                <div><dt>24H HIGH</dt><dd id="selectedHigh">-</dd></div>
+                                <div><dt>24H LOW</dt><dd id="selectedLow">-</dd></div>
+                                <div><dt>24H VOLUME</dt><dd id="selectedVolume">-</dd></div>
+                            </dl>
+
+                            <div class="range-block">
+                                <div><span>24H RANGE POSITION</span><strong id="selectedRangeText">0%</strong></div>
+                                <div class="range-track"><span id="selectedRangeBar"></span></div>
+                                <div class="range-ends"><span>LOW</span><span>HIGH</span></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel movers-panel" aria-labelledby="moversTitle">
+                        <div class="panel-heading compact-heading">
+                            <div>
+                                <span class="panel-code">RANK-01</span>
+                                <h2 id="moversTitle">TOP MOVERS</h2>
+                            </div>
+                        </div>
+                        <div class="movers-columns">
+                            <div>
+                                <h3>GAINERS</h3>
+                                <div id="topGainers" class="mover-list"></div>
+                            </div>
+                            <div>
+                                <h3>LOSERS</h3>
+                                <div id="topLosers" class="mover-list"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="panel favorites-panel" aria-labelledby="favoritesTitle">
+                        <div class="panel-heading compact-heading">
+                            <div>
+                                <span class="panel-code">WATCH-01</span>
+                                <h2 id="favoritesTitle">WATCHLIST</h2>
+                            </div>
+                        </div>
+                        <div id="favoritesList" class="favorite-list"></div>
+                    </section>
+                </aside>
+            </div>
+
+            <section class="panel table-panel" aria-labelledby="tableTitle">
+                <div class="panel-heading table-heading">
+                    <div>
+                        <span class="panel-code">MKT-02</span>
+                        <h2 id="tableTitle">MARKET DETAILS</h2>
+                        <p id="tableStatus">0개 종목 표시</p>
+                    </div>
+                    <span id="lastUpdated" class="last-updated">LAST UPDATE --:--:--</span>
+                </div>
+
+                <div class="table-scroll">
+                    <table id="cryptoTable">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="favorite-column">관심</th>
+                                <th scope="col" aria-sort="ascending"><button type="button" data-sort="symbol">심볼</button></th>
+                                <th scope="col"><button type="button" data-sort="lastPrice">현재가</button></th>
+                                <th scope="col"><button type="button" data-sort="changePercent">24H 변동률</button></th>
+                                <th scope="col"><button type="button" data-sort="highPrice">24H 고가</button></th>
+                                <th scope="col"><button type="button" data-sort="lowPrice">24H 저가</button></th>
+                                <th scope="col">가격 위치</th>
+                                <th scope="col" aria-sort="descending"><button type="button" data-sort="quoteVolume">거래대금</button></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cryptoList"></tbody>
+                    </table>
+                </div>
+
+                <div id="tableEmpty" class="empty-state table-empty" hidden>
+                    <strong>조건에 맞는 종목이 없습니다.</strong>
+                    <span>검색어 또는 관심 종목 설정을 확인하세요.</span>
+                </div>
+
+                <button id="loadMoreButton" class="load-more-button" type="button" hidden>더 보기</button>
+            </section>
+        </main>
+
+        <footer class="terminal-footer">
+            <span>REST ENDPOINT · /api/v3/ticker/24hr</span>
+            <span>1초 자동 갱신 · 투자 판단용이 아닌 시장 조회 화면입니다.</span>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="cryptocurrency.js"></script>
+</body>
+</html>
